@@ -43,65 +43,65 @@
 	<!--Menu-->
 	<form>
 		<div class="menuHeading" id="m1" onclick="disp1()">
-			<span class="meal">BREAKFAST</span>
+			<span class="meal">SOUPS & SALADS</span>
 			<img src="images/plus.png" class="rotPlus">
 		</div>
 		<div id="items1">
 			<ul>
 				<% for (item of menu){
-					if(item.meal=='breakfast'){ %>
+					if(item.meal=='Soups and Salads'){ %>
 					<li><%=item.item%> - <input type="number" name="<%=item.name%>"  min="0" max="5" disabled><span class="menuItem">Rs. <%=item.price%></span><span><br><%=item.description%></span></li>
 					<%}
 				}%>
 			</ul>
 		</div>
 		<div class="menuHeading" id="m2" onclick="disp2()">
-			<span  class="meal">LUNCH</span>
+			<span  class="meal">APPETIZERS</span>
 			<img src="images/plus.png" class="rotPlus">
 		</div>
 		<div id="items2">
 			<ul>
 				<% for (item of menu){
-					if(item.meal=='lunch'){ %>
+					if(item.meal=='Appetizers'){ %>
 					<li><%=item.item%> - <input type="number" name="<%=item.name%>"  min="0" max="5" disabled><span class="menuItem">Rs. <%=item.price%></span><span><br><%=item.description%></span></li>
 					<%}
 				}%>
 			</ul>
 		</div>
 		<div class="menuHeading"  id="m3"  onclick="disp3()">
-			<span class="meal">SNACKS</span>
+			<span class="meal">MAIN COURSE</span>
 			<img src="images/plus.png" class="rotPlus">
 		</div>
 		<div id="items3">
 			<ul>
 				<% for (item of menu){
-					if(item.meal=='snacks'){ %>
+					if(item.meal=='Maincourse'){ %>
 					<li><%=item.item%> - <input type="number" name="<%=item.name%>"  min="0" max="5" disabled><span class="menuItem">Rs. <%=item.price%></span><span><br><%=item.description%></span></li>
 					<%}
 				}%>
 			</ul>
 		</div>
 		<div class="menuHeading"  id="m4"  onclick="disp4()">
-			<span class="meal">DINNER</span>
+			<span class="meal">BEVERAGES</span>
 			<img src="images/plus.png" class="rotPlus">
 		</div>
 		<div id="items4">
 			<ul>
 				<% for (item of menu){
-					if(item.meal=='dinner'){ %>
+					if(item.meal=='Beverages'){ %>
 					<li><%=item.item%> - <input type="number" name="<%=item.name%>"  min="0" max="5" disabled><span class="menuItem">Rs. <%=item.price%></span><span><br><%=item.description%></span></li>
 					<%}
 				}%>
 			</ul>
 		</div>
 		<div class="menuHeading"  id="m5"  onclick="disp5()">
-			<span class="meal">DESSERT</span>
+			<span class="meal">DESSERTS</span>
 			<img src="images/plus.png" class="rotPlus">
 		</div>
 		<div id="items5">
 			<ul>
 				<% for (item of menu){
-					if(item.meal=='dessert'){ %>
+					if(item.meal=='Desserts'){ %>
 					<li><%=item.item%> - <input type="number" name="<%=item.name%>"  min="0" max="5"  disabled><span class="menuItem">Rs. <%=item.price%></span><span><br><%=item.description%></span></li>
 					<%}
 				}%>
