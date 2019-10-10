@@ -30,3 +30,14 @@ const SubscriberSchema = new Schema({
 
 const Subscriber = mongoose.model('subscribers', SubscriberSchema);
 module.exports.Subscriber = Subscriber;
+
+const CartSchema = new Schema({
+	email: String,
+	item: String,
+	name: String,
+	quantity: Number,
+	totalprice: Number 
+});
+
+const Cart = mongoose.model('cart', CartSchema);
+module.exports.Cart = Cart;

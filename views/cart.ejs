@@ -18,30 +18,39 @@
 		<ul class="toolbarList">
 			<li><a href="/menu" class="toolbarLink">MENU</a></li><span class="pipe">  |  </span>
 			<li><a href="/location" class="toolbarLink">LOCATION</a></li><span class="pipe"> | </span>
-			<li><a href="/menu" class="toolbarLink">ORDER ONLINE</a></li><span class="pipe"> | </span>
+			<li><a href="/reservation" class="toolbarLink">RESERVATION</a></li><span class="pipe"> | </span>
 			<li><a href="/about" class="toolbarLink">ABOUT US</a></li>
 		</ul>
 		<ul class="toolbarList2">
-			<li><a href="/cart" class="toolbarLink">CART &nbsp<i class="fa fa-shopping-cart"></i></a></li><span class="pipe"> |</span>
-			<li><a href="/login" class="toolbarLink">LOGIN &nbsp<i class="fa fa-user"></i></a></li>
+			<!-- <li><a href="/cart" class="toolbarLink">CART &nbsp<i class="fa fa-shopping-cart"></i></a></li><span class="pipe"> |</span> -->
+			<li id=user><a href="/login" class="toolbarLink">LOGIN &nbsp<i class="fa fa-user"></i></a></li>
 		</ul>
 	</div>
+	<!--EndToolbar-->
 	<!--Cart-->
-	<div class="cart">
-		Ordered Items:<br>
+	<div class="cart"><br>
+		<div class="itemsInCart">~ITEMS IN CART~</div><br>
 		<span id="bill">
 			
 		</span>
 	</div>
-	<!--Newsletter-->
-	<div class="newsletter">
-		<div>SIGN UP FOR OUR NEWSLETTER!</div><br>
-		<div>
-			<form method="POST" action="/subscribe">
-				<input type="email" placeholder="EMAIL*" class="mail" name="mailid" required>
-				<input type="submit" value="SUBSCRIBE" class="button1">
-			</form>
-		</div>
-	</div>
+	<script type="text/javascript">
+		var data = <%-JSON.stringify(data)%>;
+		var bill = '';
+		if(data.length>0){
+			var totalCost = 0;
+			bill+='<table><tr><th>Item</th><th>Quantity</th><th>Price</th><th></th></tr>';
+			for(var i=0; i<data.length; i++){
+				var del = '<td><form method="POST" action="/deleteFromCart" id="'+data[i].name+'"><input type="hidden" id="name" name="name" value="'+data[i].name+'"><span onclick="document.getElementById(\''+data[i].name+'\').submit();"><i class="fa fa-trash-o"></i></span></form></td>';
+				bill+='<tr><td>'+data[i].item+'</td><td>'+data[i].quantity+'</td><td>'+data[i].totalprice+'</td>'+del+'</tr>';
+				totalCost+=data[i].totalprice;
+			}
+			bill+='<tr><td colspan="4">Total Cost: '+totalCost+'</td></tr></table><br><a href="/payment"><span class ="button2 payment">Proceed to checkout</span></a>';
+		}
+		else{
+			bill = '<span class = "noItems">No items in cart!</span>';
+		}
+		document.getElementById('bill').innerHTML = bill;
+	</script>
 </body>
 </html>

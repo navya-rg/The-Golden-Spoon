@@ -1,8 +1,19 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var tgsController = require('./controllers/tgsController');
+const express = require('express');
+const bodyParser = require('body-parser');
+const tgsController = require('./controllers/tgsController');
 const mongoose = require('mongoose');
+const models = require('./models/models');
 const app = express();
+
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+
+app.use(cookieParser());
+app.use(session({
+  secret: "SecretKey",
+  resave: false,
+    saveUninitialized: true
+    }));
 
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 mongoose.connect('mongodb://localhost/tgs');
@@ -17,7 +28,7 @@ app.use('/videos', express.static('./public/videos'));
 app.use(bodyParser.json());
 
 app.get('/index', function(req, res){
-	res.render('index', {message: ''});
+	res.render('index', {message: '', user: req.session.user});
 });
 
 app.post('/subscribe', urlencodedParser, function(req, res){
@@ -26,19 +37,28 @@ app.post('/subscribe', urlencodedParser, function(req, res){
 });
 
 app.get('/about', function(req, res){
-	res.render('about');
+	res.render('about', {user: req.session.user});
 });
 
 app.get('/cart', function(req, res){
-	res.render('cart');
+	tgsController.printCart(req, res);
+	//res.render('cart', {user: req.session.user});
 });
 
 app.get('/location', function(req, res){
-	res.render('location');
+	res.render('location', {user: req.session.user});
 });
+
+/*app.get('/reservation', function(req, res){
+	res.render('reservation');
+});*/
 
 app.get('/login', function(req, res){
 	res.render('login', {message: ''});
+});
+
+app.get('/logout', function(req, res){
+	tgsController.logout(req, res);
 });
 
 app.get('/forgotPassword', function(req, res){
@@ -46,7 +66,7 @@ app.get('/forgotPassword', function(req, res){
 });
 
 app.get('/menu', function(req, res){
-	tgsController.fetchMenu(res);
+	tgsController.fetchMenu(req, res);
 });
 
 app.get('/signup', function(req, res){
@@ -54,7 +74,11 @@ app.get('/signup', function(req, res){
 });
 
 app.get("*", function(req,res){
-    res.render('404');
+    res.render('404', {user: req.session.user});
+});
+
+app.post('/deleteFromCart', urlencodedParser, function(req, res){
+	tgsController.deleteFromCart(req, res);
 });
 
 app.post('/updateMenu', urlencodedParser, function(req, res){
@@ -62,19 +86,23 @@ app.post('/updateMenu', urlencodedParser, function(req, res){
 });
 
 app.post('/signupSubmit', urlencodedParser, function(req, res){
-	tgsController.signupSubmit(req.body, res);
+	tgsController.signupSubmit(req, res);
 });
 
 app.post('/loginSubmit', urlencodedParser, function(req, res){
-	tgsController.loginSubmit(req.body, res);
+	tgsController.loginSubmit(req, res);
 });
 
 app.post('/forgotPasswordSubmit', urlencodedParser, function(req, res){
 	tgsController.forgotPasswordSubmit(req.body, res);
 });
 
+app.post('/add2cart', urlencodedParser, function(req, res){
+	tgsController.add2cart(req, res);
+});
+
 app.listen(3000, function(){
-	console.log('Now listening for requests');
+	console.log('**Now listening for requests**');
 });
 
 module.exports.app = app;

@@ -1,39 +1,40 @@
 const express = require('express');
-const models = require('../models/models');
 const app = express.Router();
 const mongoose = require('mongoose');
+const models = require('../models/models');
 const nodemailer = require('nodemailer');
 
 module.exports.updateMenu = function(data, res){
-  //console.log(data);
   models.Item.create(data).then(function(i){
-    //console.log(i);
     res.send(i);
   });
 };
 
-module.exports.fetchMenu = function(res){
+fetchMenu = function(req, res){
   models.Item.find({}).then(function(data){
-    //return data;
-    res.render('menu', {menu: data});
+    res.render('menu', {menu: data, user: req.session.user});
   });
 };
+module.exports.fetchMenu = fetchMenu;
 
-module.exports.signupSubmit = function(data, res){
+module.exports.signupSubmit = function(req, res){
+  var data = req.body;
   models.User.findOne({email: data.email}, function (err, docs) {
     if(docs==undefined){
       if (!("newsletter" in data)){
         data.newsletter = false;
       }
       models.User.create(data).then(function(data){
-      //res.send(data);
-      data.newsletter=Boolean(data.newsletter);
-      if(data.newsletter==true){
-        models.Subscriber.create({email: data.email}).then(function(){});
-        sendMail(data.email);
-      }
-      sendMail(data.email,"Signup Successful", "Thank you for joining our family!");
-        res.render('index', {message: ''});
+        data.newsletter=Boolean(data.newsletter);
+        if(data.newsletter==true){
+          models.Subscriber.create({email: data.email}).then(function(){});
+          sendMail(data.email);
+        }
+        sendMail(data.email,"Signup Successful", "Thank you for joining our family!");
+        req.session.user = data.email;
+        console.log('After signup: ', req.session);
+        fetchMenu(req, res);
+        //res.render('index', {message: ''});
       });
     }
     else{
@@ -42,7 +43,8 @@ module.exports.signupSubmit = function(data, res){
   });
 };
 
-module.exports.loginSubmit = function(data, res){
+module.exports.loginSubmit = function(req, res){
+  var data = req.body;
   models.User.findOne({email: data.username}, function (err, docs){
     if(docs==undefined){
       res.render('login', {message: '**User does not exist**'});
@@ -51,9 +53,19 @@ module.exports.loginSubmit = function(data, res){
       res.render('login', {message: '**Incorrect password**'});
     }
     else if(docs.password==data.password){
-      res.render('login', {message: '**Successfully logged in**'});
+      req.session.user = data.username;
+      console.log('After login: ',req.session);
+      fetchMenu(req, res);
+      //res.render('index', {message: '', user: req.session.user});
+      //res.render('login', {message: '**Successfully logged in**'});
     }
   });
+};
+
+module.exports.logout = function(req, res){
+  req.session.user = undefined;
+  console.log('After logout: ', req.session);
+  res.render('login', {message: '**Successfully logged out**'});
 };
 
 module.exports.forgotPasswordSubmit = function(data, res){
@@ -67,6 +79,52 @@ module.exports.forgotPasswordSubmit = function(data, res){
     }
   });
 };
+
+function write(temp){
+  models.Cart.create(temp);
+}
+
+function fetch(item, quantity, req, callback){
+  models.Item.findOne({name: item}, function (err, docs){
+    var temp = {};
+    temp['quantity'] = quantity;
+    temp['email'] = req.session.user;
+    temp['item'] = docs.item;
+    temp['name'] = docs.name;
+    temp['totalprice'] = docs.price * quantity;
+    callback(temp);
+  });
+}
+
+module.exports.add2cart = function(req, res){
+  var data = req.body;
+  var temp = {};
+  for (item in data){
+    data[item] = Number(data[item]);
+    if(data[item]>0 && data[item]<6){
+      temp[item] = data[item];
+    }
+  }
+  for(item in temp){
+    fetch(item, temp[item], req, write);
+  }
+  printCart(req, res);
+};
+
+module.exports.deleteFromCart = function(req, res){
+  var name = req.body.name;
+  models.Cart.find({ name:name }).remove().exec();
+  printCart(req, res);
+};
+
+printCart = function(req, res){
+  models.Cart.find({email: req.session.user}, function(err, docs){
+    /*docs = JSON.stringify(docs);
+    console.log(docs);*/
+    res.render('cart', {user: req.session.user, data: docs});
+  });
+};
+module.exports.printCart = printCart;
 
 var sendMail = function(receiver, sub='Newsletter subscription', msg="Thank you for subscribing to our weekly newsletter!"){
 	models.Subscriber.findOne({email: receiver}, function(err, docs){

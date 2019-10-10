@@ -1,6 +1,7 @@
 body {
 	background-color:rgba(0,0,0,1);
 	color:rgba(255,255,255,1);
+    margin-top: 0px;
 }
 .cartBody{
     background-image:url('/images/parallax4.jpg');
@@ -62,7 +63,7 @@ a.toolBarLink:active{
 	list-style-type:none;
 	color:rgba(255,255,255,0.7);
     position:relative; 
-    left:19%; 
+    left:20%; 
     padding-inline-start: 0px;
 }
 .toolbarList li{
@@ -139,9 +140,9 @@ a.button1:hover{
 input.button1:hover{
 	background-color:rgba(143,38,38,1);
 }
-a.button2:hover{
-	background-color:rgba(143,38,38,1);
-	color:rgba(255,255,255,1);
+a.button2:hover, span.button2:hover{
+    color:rgba(255,255,255,1);
+    background-color:rgba(143,38,38,1);
 }
 .cursiveContainer{
     padding:100px 0px;
@@ -307,6 +308,7 @@ input[type=text]:focus, input[type=number]:focus, input[type=address]:focus, inp
 }
 input[type=submit]:hover, input[type=reset]:hover {
 	background-color:rgba(143,38,38,1);
+    color: rgba(255,255,255,1);
 }
 input.formbutton{
     background-color:rgba(174,134,72,1);
@@ -534,7 +536,7 @@ ul{
 li{
     padding:10px;
 }
-li span{
+.menu li span{
     color:rgba(120,120,120,1);
 }
 li input{
@@ -612,22 +614,33 @@ li input{
 }
 #bill{
 	font-family: Verdana;
-	font-size:0.9em;
-	color:rgba(255,255,255,1);
-}
-
-table{
-    width: 100%;
-    background: #222;
-    font-family: sans-serif;
-}
-td{ 
     text-align: center;
-    padding: 4px;
 }
-table tbody{
-    background: #ddd;
-    color: black;
+.itemsInCart{
+    font-size: 0.9em;
+    text-align: center;
+}
+table{
+    width: 70%;
+    margin: auto;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(150,150,150,1);
+    border-collapse: collapse;
+}
+td, th{ 
+    text-align: center;
+    padding: 6px;
+    font-size: 0.6em;
+    border: 1px solid rgba(150,150,150,1);
+    color: rgba(200,200,200,1);
+}
+table span{
+    cursor:pointer
+}
+.payment{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 .newsletter{
     text-align:center;
@@ -654,4 +667,37 @@ table tbody{
     font-size: 16px;
     font-family: verdana;
     text-align: center;
+}
+.dropdown{
+    position: relative;
+    display: inline-block;
+}
+.dropdown:hover{
+    background-color: rgba(174,134,72,1);
+    color: rgba(255,255,255,1);
+}
+.dropdown-content{
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 39px;
+    background-color: rgba(180,180,180,0.8);
+    min-width: 125px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+.dropdown-content a{
+    color: rgba(0,0,0,1);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+.dropdown-content a:hover{
+    background-color: rgba(241,241,241,1);
+}
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+.noItems{
+    margin: auto;
 }
