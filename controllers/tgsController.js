@@ -96,6 +96,23 @@ function fetch(item, quantity, req, callback){
   });
 }
 
+function checkIfExists(temp, item, req){
+  return new Promise((resolve) => {
+    setTimeout(()=>{
+      models.Cart.findOne({name: item}, function (err, docs){
+        if(docs==undefined){
+          fetch(item, temp[item], req, write);
+        }
+        else{
+          docs.quantity+=temp[item];
+          docs.save();
+        }
+      });
+      resolve(item);
+    }, 1000);
+  });
+}
+
 module.exports.add2cart = function(req, res){
   var data = req.body;
   var temp = {};
@@ -105,16 +122,23 @@ module.exports.add2cart = function(req, res){
       temp[item] = data[item];
     }
   }
+  let promises=[];
   for(item in temp){
-    fetch(item, temp[item], req, write);
+    promises.push(checkIfExists(temp, item, req));
   }
-  printCart(req, res);
+  Promise.all(promises).then((results) => {
+    models.Item.find({}).then(function(data){
+      res.render('menu', {menu: data, user: '*'+req.session.user});
+    });
+    //printCart(req, res);
+  }).catch((e) => {});
 };
 
 module.exports.deleteFromCart = function(req, res){
   var name = req.body.name;
-  models.Cart.find({ name:name }).remove().exec();
-  printCart(req, res);
+  models.Cart.find({ name:name }).remove().exec().then(function(){
+    printCart(req, res);
+  });
 };
 
 printCart = function(req, res){

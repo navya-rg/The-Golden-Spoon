@@ -40,9 +40,32 @@ app.get('/about', function(req, res){
 	res.render('about', {user: req.session.user});
 });
 
+/*app.get('/profile', function(req, res){
+	res.render('profile', {user: req.session.user});
+});*/
+
 app.get('/cart', function(req, res){
 	tgsController.printCart(req, res);
-	//res.render('cart', {user: req.session.user});
+});
+
+app.get('/payment', function(req, res){
+	res.render('payment', {user: req.session.user});
+});
+
+app.get('/ordersuccess', function(req, res){
+	res.render('ordersuccess', {user: req.session.user});
+});
+
+app.get('/creditcard', function(req, res){
+	res.render('creditcard', {user: req.session.user});
+});
+
+app.get('/debitcard', function(req, res){
+	res.render('debitcard', {user: req.session.user});
+});
+
+app.get('/netbanking', function(req, res){
+	res.render('netbanking', {user: req.session.user});
 });
 
 app.get('/location', function(req, res){
