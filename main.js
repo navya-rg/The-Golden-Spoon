@@ -40,9 +40,9 @@ app.get('/about', function(req, res){
 	res.render('about', {user: req.session.user});
 });
 
-/*app.get('/profile', function(req, res){
-	res.render('profile', {user: req.session.user});
-});*/
+app.get('/profile', function(req, res){
+	tgsController.printProfile(req, res);
+});
 
 app.get('/cart', function(req, res){
 	tgsController.printCart(req, res);
@@ -53,7 +53,7 @@ app.get('/payment', function(req, res){
 });
 
 app.get('/ordersuccess', function(req, res){
-	res.render('ordersuccess', {user: req.session.user});
+	tgsController.cart2orders(req, res);
 });
 
 app.get('/creditcard', function(req, res){
@@ -75,6 +75,10 @@ app.get('/location', function(req, res){
 /*app.get('/reservation', function(req, res){
 	res.render('reservation');
 });*/
+
+app.get('/orders', function(req, res){
+	tgsController.printOrders(req, res);
+});
 
 app.get('/login', function(req, res){
 	res.render('login', {message: ''});
@@ -122,6 +126,10 @@ app.post('/forgotPasswordSubmit', urlencodedParser, function(req, res){
 
 app.post('/add2cart', urlencodedParser, function(req, res){
 	tgsController.add2cart(req, res);
+});
+
+app.post('/editProfile', urlencodedParser, function(req, res){
+	tgsController.editProfile(req, res);
 });
 
 app.listen(3000, function(){

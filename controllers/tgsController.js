@@ -150,6 +150,72 @@ printCart = function(req, res){
 };
 module.exports.printCart = printCart;
 
+module.exports.printOrders = function(req, res){
+  models.Order.find({email: req.session.user}, function(err, docs){
+    res.render('orders', {user: req.session.user, data: docs});
+  });
+};
+
+module.exports.cart2orders = function(req, res){
+  models.Cart.find({email: req.session.user}, function(err, docs){
+    docs.forEach(function(doc){
+      var temp = {};
+      temp['quantity'] = doc.quantity;
+      temp['email'] = doc.email;
+      temp['item'] = doc.item;
+      temp['name'] = doc.name;
+      temp['totalprice'] = doc.totalprice;
+      var today = new Date();
+      var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+      var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      var dateTime = date+' '+time;
+      temp['date'] = dateTime;
+      models.Order.create(temp);
+      models.Cart.find({ name:doc.name, email:doc.email }).remove().exec();
+    });
+  });
+  res.render('ordersuccess', {user: req.session.user});
+};
+
+printProfile = function(req, res){
+  var details={};
+  models.User.findOne({email: req.session.user}, function (err, docs){
+    details['firstName'] = docs.firstName;
+    details['lastName'] = docs.lastName;
+    details['email'] = docs.email;
+    details['phnumber'] = docs.phnumber;
+    details['newsletter'] = docs.newsletter;
+    details['password'] = docs.password;
+    res.render('profile', {user: req.session.user, data: details});
+  });
+};
+module.exports.printProfile = printProfile;
+
+module.exports.editProfile = function(req, res){
+  //console.log(req.body.phnumber);
+  models.User.findOne({email: req.session.user}, function (err, docs){
+    if(req.body.firstName!='')
+      docs.firstName = req.body.firstName;
+    if(req.body.lastName!='')
+      docs.lastName = req.body.lastName;
+    if(req.body.password!='')
+      docs.password = req.body.password;
+    if(req.body.phnumber!='')
+      docs.phnumber = req.body.phnumber;
+    if(req.body.newsletter == 'true'){
+      docs.newsletter = true;
+      sendMail(req.session.user);
+    }
+    else{
+      docs.newsletter = false;
+      models.Subscriber.find({email: req.session.user}).remove().exec().then(function(){});
+    }
+    docs.save();
+  }).then(function(){
+    printProfile(req, res);
+  });
+};
+
 var sendMail = function(receiver, sub='Newsletter subscription', msg="Thank you for subscribing to our weekly newsletter!"){
 	models.Subscriber.findOne({email: receiver}, function(err, docs){
     if(docs==undefined){

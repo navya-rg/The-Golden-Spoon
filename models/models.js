@@ -41,3 +41,15 @@ const CartSchema = new Schema({
 
 const Cart = mongoose.model('cart', CartSchema);
 module.exports.Cart = Cart;
+
+const OrderSchema = new Schema({
+	email: String,
+	item: String,
+	name: String,
+	quantity: Number,
+	totalprice: Number,
+	date: String 
+});
+
+const Order = mongoose.model('orders', OrderSchema);
+module.exports.Order = Order;

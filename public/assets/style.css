@@ -735,7 +735,7 @@ table span{
     display: block;
 }
 .noItems{
-    margin: auto;
+    text-align: center;
 }
 #alert{
   padding: 20px;
@@ -763,4 +763,27 @@ table span{
 
 .closebtn:hover {
   color: rgba(255,0,0,1);
+}
+
+.profile {
+    color: rgba(180,180,180,1);
+    padding:20px;
+    margin:auto;
+    width:40%;
+    font-family:Verdana;
+    background:rgba(0,0,0,0.3);
+    position:absolute;
+    transform: translate(70%, 50%);
+}
+#FNAME, #LNAME, #EMAIL, #PHNUMBER, #NEWSLETTER, #edit{
+    margin-left: 20%;
+}
+#fname, #lname, #email, #phnumber, #newsletter{
+    position: absolute;
+    left: 60%;
+    color: rgba(255,255,255,1);
+}
+
+.editProfile{
+    display: none;
 }
