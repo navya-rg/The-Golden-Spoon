@@ -72,9 +72,13 @@ app.get('/location', function(req, res){
 	res.render('location', {user: req.session.user});
 });
 
-/*app.get('/reservation', function(req, res){
-	res.render('reservation');
-});*/
+app.get('/reservation', function(req, res){
+	res.render('reservation', {user: req.session.user});
+});
+
+app.get('/reservesuccess', function(req, res){
+	res.render('reservesuccess', {user: req.session.user});
+});
 
 app.get('/orders', function(req, res){
 	tgsController.printOrders(req, res);

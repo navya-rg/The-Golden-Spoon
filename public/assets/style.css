@@ -1,7 +1,7 @@
 body {
 	background-color:rgba(0,0,0,1);
 	color:rgba(255,255,255,1);
-    margin-top: 0px;
+    margin: 0px;
 }
 .cartBody{
     background-image:url('/images/parallax4.jpg');
@@ -296,6 +296,13 @@ a.button2:hover, span.button2:hover, .button2:hover{
     font-size:1.5em;
 }
 input.formele{
+  width:80%;
+  padding:10px 10px;
+  float:right;
+  font-size:100%;
+  border:1px solid rgb(180,180,180);
+}
+textarea.formele{
   width:80%;
   padding:10px 10px;
   float:right;
@@ -749,6 +756,18 @@ table span{
   font-size: 1em;
   display: none;
 }
+#alert2{
+  padding: 20px;
+  background-color: rgba(220,220,220,1);;
+  color: rgba(0,0,0,1);
+  width: 20%;
+  position: absolute;
+  transform: translate(170%, -125%);
+  z-index: 9;
+  font-family: Verdana;
+  font-size: 1em;
+  display: none;
+}
 
 .closebtn {
   margin-left: 15px;
@@ -783,7 +802,17 @@ table span{
     left: 60%;
     color: rgba(255,255,255,1);
 }
-
 .editProfile{
     display: none;
+}
+table.room{
+    border: 0px;
+    background-color: rgba(0,0,0,0);
+}
+table pre{
+    font-size: 2.5em;
+}
+table.room td{
+    padding: 15px;
+    border: 0px;
 }
