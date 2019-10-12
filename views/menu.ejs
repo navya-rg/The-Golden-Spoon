@@ -54,7 +54,7 @@
 			<ul>
 				<% for (item of menu){
 					if(item.meal=='Soups and Salads'){ %>
-					<li><%=item.item%> - <input type="number" name="<%=item.name%>"  min="0" max="5" class="privilege"><span class="menuItem">Rs. <%=item.price%></span><span><br><%=item.description%></span></li>
+					<li><%=item.item%> - <input type="number" name="<%=item.name%>"  value='' min="0" max="5" class="privilege"><span class="menuItem">Rs. <%=item.price%></span><span><br><%=item.description%></span></li>
 					<%}
 				}%>
 			</ul>

@@ -241,11 +241,13 @@ var sendMail = function(receiver, sub='Newsletter subscription', msg="Thank you 
 	transporter.sendMail(mailOptions, function(error, info){
   		if (error) {
     		console.log(error);
+        return false;
   		} else {
     		console.log('Email sent: ' + info.response);
+        console.log('Email sent to: '+receiver);
+        return true;
   		}
 	});
-	console.log('Email sent to: '+receiver);
 };
 module.exports.sendMail = sendMail;
 

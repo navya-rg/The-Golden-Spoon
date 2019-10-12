@@ -768,6 +768,18 @@ table span{
   font-size: 1em;
   display: none;
 }
+#alert3{
+  padding: 20px;
+  background-color: rgba(220,220,220,1);;
+  color: rgba(0,0,0,1);
+  width: 21%;
+  position: absolute;
+  transform: translate(163%, -4755%);
+  z-index: 9;
+  font-family: Verdana;
+  font-size: 1em;
+  display: none;
+}
 
 .closebtn {
   margin-left: 15px;

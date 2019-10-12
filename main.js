@@ -32,8 +32,12 @@ app.get('/index', function(req, res){
 });
 
 app.post('/subscribe', urlencodedParser, function(req, res){
-	tgsController.sendMail(req.body.mailid);
-	res.render('index', {message: 'You have successfully signed up :)'});
+	var status = tgsController.sendMail(req.body.mailid);
+	console.log('Email sent', status);
+	if(status==true)
+		res.render('index', {user: req.session.user, message: 'You have successfully signed up :)'});
+	else
+		res.render('index', {user: req.session.user, message: 'Unable to process your request :('});
 });
 
 app.get('/about', function(req, res){
